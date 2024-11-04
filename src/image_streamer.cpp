@@ -200,7 +200,7 @@ void ImageTransportImageStreamer::imageCallback(const sensor_msgs::msg::Image::C
     }
 
     last_frame = node_->now();
-    sendImage(output_size_image, msg->header.stamp);
+    sendImage(output_size_image, last_frame);
   } catch (cv_bridge::Exception & e) {
     auto & clk = *node_->get_clock();
     RCLCPP_ERROR_THROTTLE(node_->get_logger(), clk, 40, "cv_bridge exception: %s", e.what());
