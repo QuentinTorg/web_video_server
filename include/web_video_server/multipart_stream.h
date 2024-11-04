@@ -28,7 +28,7 @@ public:
 		async_web_server_cpp::HttpConnection::ResourcePtr resource);
 
 private:
-  bool isBusy();
+  bool isBusy(const ros::Time &currentTime);
 
 private:
   const std::size_t max_queue_size_;

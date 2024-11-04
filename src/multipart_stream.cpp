@@ -48,7 +48,7 @@ void MultipartStream::sendPartFooter(const ros::Time &time) {
 
 void MultipartStream::sendPartAndClear(const ros::Time &time, const std::string& type,
 				       std::vector<unsigned char> &data) {
-  if (!isBusy())
+  if (!isBusy(time))
   {
     sendPartHeader(time, type, data.size());
     connection_->write_and_clear(data);
@@ -59,7 +59,7 @@ void MultipartStream::sendPartAndClear(const ros::Time &time, const std::string&
 void MultipartStream::sendPart(const ros::Time &time, const std::string& type,
 			       const boost::asio::const_buffer &buffer,
 			       async_web_server_cpp::HttpConnection::ResourcePtr resource) {
-  if (!isBusy())
+  if (!isBusy(time))
   {
     sendPartHeader(time, type, boost::asio::buffer_size(buffer));
     connection_->write(buffer, resource);
@@ -67,8 +67,7 @@ void MultipartStream::sendPart(const ros::Time &time, const std::string& type,
   }
 }
 
-bool MultipartStream::isBusy() {
-  ros::Time currentTime = ros::Time::now();
+bool MultipartStream::isBusy(const ros::Time &currentTime) {
   while (!pending_footers_.empty())
   {
     if (pending_footers_.front().contents.expired()) {
