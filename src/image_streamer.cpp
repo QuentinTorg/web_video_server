@@ -149,7 +149,7 @@ void ImageTransportImageStreamer::imageCallback(const sensor_msgs::ImageConstPtr
     }
 
     last_frame = ros::Time::now();
-    sendImage(output_size_image, msg->header.stamp);
+    sendImage(output_size_image, last_frame);
   }
   catch (cv_bridge::Exception &e)
   {
